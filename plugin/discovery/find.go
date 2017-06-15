@@ -75,11 +75,13 @@ func findPluginPaths(kind string, machineName string, dirs []string) []string {
 					fullName := item.Name()
 
 					if !strings.HasPrefix(fullName, prefix) {
+						log.Printf("[DEBUG] skipping %q, doesn't match plugin prefix", fullName)
 						continue
 					}
 
 					// New-style paths must have a version segment in filename
 					if !strings.Contains(strings.ToLower(fullName), "_v") {
+						log.Printf("[DEBUG] skipping %q, has no version segment", fullName)
 						continue
 					}
 
@@ -96,10 +98,10 @@ func findPluginPaths(kind string, machineName string, dirs []string) []string {
 				continue
 			}
 
-			// FIXME: we pass in GOOS_GOARCH paths directly, so these may not be "legacy"
 			if strings.HasPrefix(fullName, prefix) {
 				// Legacy style with files directly in the base directory
 				absPath, err := filepath.Abs(filepath.Join(baseDir, fullName))
+
 				if err != nil {
 					continue
 				}

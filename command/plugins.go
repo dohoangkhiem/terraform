@@ -109,9 +109,16 @@ func (m *Meta) loadPluginPath() ([]string, error) {
 	return pluginPath, nil
 }
 
-// the default location for automatically installed plugins
+// pluginDir returns default location for automatically installed plugins.
 func (m *Meta) pluginDir() string {
-	return filepath.Join(m.DataDir(), "plugins", fmt.Sprintf("%s_%s", runtime.GOOS, runtime.GOARCH))
+	return filepath.Join(m.DataDir(), "plugins")
+}
+
+// pluginMachineDir returns the full plugin path, including the final OS_ARCH
+// directory. While we don't need to supply the OS_ARCH path for plugin
+// discovery, it's useful for testing and locating the lock file.
+func (m *Meta) pluginMachineDir() string {
+	return filepath.Join(m.pluginDir(), fmt.Sprintf("%s_%s", runtime.GOOS, runtime.GOARCH))
 }
 
 // pluginDirs return a list of directories to search for plugins.

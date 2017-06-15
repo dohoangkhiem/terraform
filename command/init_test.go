@@ -516,7 +516,7 @@ func TestInit_findVendoredProviders(t *testing.T) {
 	}
 
 	// make our plugin paths
-	if err := os.MkdirAll(c.pluginDir(), 0755); err != nil {
+	if err := os.MkdirAll(c.pluginMachineDir(), 0755); err != nil {
 		t.Fatal(err)
 	}
 	vendorMachineDir := filepath.Join(
@@ -529,7 +529,7 @@ func TestInit_findVendoredProviders(t *testing.T) {
 
 	// add some dummy providers
 	// the auto plugin directory
-	exactPath := filepath.Join(c.pluginDir(), "terraform-provider-exact_v1.2.3_x4")
+	exactPath := filepath.Join(c.pluginMachineDir(), "terraform-provider-exact_v1.2.3_x4")
 	if err := ioutil.WriteFile(exactPath, []byte("test bin"), 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -573,19 +573,19 @@ func TestInit_getUpgradePlugins(t *testing.T) {
 			"between": []string{"3.4.5", "2.3.4", "1.2.3"},
 		},
 
-		Dir: m.pluginDir(),
+		Dir: m.pluginMachineDir(),
 	}
 
-	err := os.MkdirAll(m.pluginDir(), os.ModePerm)
+	err := os.MkdirAll(m.pluginMachineDir(), os.ModePerm)
 	if err != nil {
 		t.Fatal(err)
 	}
-	exactUnwanted := filepath.Join(m.pluginDir(), installer.FileName("exact", "0.0.1"))
+	exactUnwanted := filepath.Join(m.pluginMachineDir(), installer.FileName("exact", "0.0.1"))
 	err = ioutil.WriteFile(exactUnwanted, []byte{}, os.ModePerm)
 	if err != nil {
 		t.Fatal(err)
 	}
-	greaterThanUnwanted := filepath.Join(m.pluginDir(), installer.FileName("greater_than", "2.3.3"))
+	greaterThanUnwanted := filepath.Join(m.pluginMachineDir(), installer.FileName("greater_than", "2.3.3"))
 	err = ioutil.WriteFile(greaterThanUnwanted, []byte{}, os.ModePerm)
 	if err != nil {
 		t.Fatal(err)
@@ -608,7 +608,7 @@ func TestInit_getUpgradePlugins(t *testing.T) {
 		t.Fatalf("command did not complete successfully:\n%s", ui.ErrorWriter.String())
 	}
 
-	files, err := ioutil.ReadDir(m.pluginDir())
+	files, err := ioutil.ReadDir(m.pluginMachineDir())
 	if err != nil {
 		t.Fatal(err)
 	}
