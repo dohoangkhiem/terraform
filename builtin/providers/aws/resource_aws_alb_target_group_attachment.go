@@ -40,6 +40,7 @@ func resourceAwsAlbTargetGroupAttachment() *schema.Resource {
 			"instances": &schema.Schema{
 				Type:     schema.TypeSet,
 				Elem:     &schema.Schema{Type: schema.TypeString},
+				ForceNew: true,
 				Optional: true,
 				Computed: true,
 				Set:      schema.HashString,
